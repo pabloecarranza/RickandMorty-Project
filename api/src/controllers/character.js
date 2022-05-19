@@ -57,16 +57,18 @@ const getAllChar = async (req, res) => {
 };
 
 const getCharactersByID = async function (req, res) {
-  res.send({ data: "esto es un get a character por ID" });
-};
-
-const createCharacter = async function (req, res) {
-  res.send({ data: "esto es un post para create" });
+  const { id } = req.params;
+  const allCharacters = await getAllCharacters();
+  let charID = allCharacters.find((char) => char.id == id);
+  if (charID.id == id) {
+    res.status(200).json(charID);
+  } else {
+    res.status(404).send("Character dont Exists");
+  }
 };
 
 module.exports = {
   getAllCharacters,
   getAllChar,
   getCharactersByID,
-  createCharacter,
 };
