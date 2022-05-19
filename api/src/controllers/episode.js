@@ -3,6 +3,8 @@ const { default: axios } = require("axios");
 const { API_URL } = process.env;
 const { Episode } = require("../db")
 
+
+
 const getEpisodeAPI = async () => {
   const results = await axios.get(`${API_URL}episode`);
 
@@ -19,15 +21,25 @@ const getEpisodeAPI = async () => {
   
 }; 
 
-const allEpisodes = async ()=>{
+const allEpisodes = async (req, res)=>{
     const Episodes = await getEpisodeAPI();
-    let onlyNamesEpisodes = Episodes.map((epi)=>{
-        return {
-            episode: epi.name
-        }
-    })
-    console.log(onlyNamesEpisodes)
+   
+      Episodes.forEach((episode)=>{
+      if(Episode){
+        Episode.findOrCreate({
+          where: { 
+            name : episode.name,
+            air_date: episode.air_date,
+            episode: episode.episode,
+            created: episode.created,
+          },
+        })
+      }
+    }) 
     
+
+    const allEpisodes = await Episode.findAll();
+    res.send(allEpisodes)
 
   }
 

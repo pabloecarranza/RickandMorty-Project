@@ -1,5 +1,5 @@
-const { Router } = require("express");
 const { getCharactersByID, createCharacter, getAllChar } = require("../controllers/character");
+const { Router } = require("express");
 const router = Router();
 
 
